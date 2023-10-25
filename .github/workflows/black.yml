@@ -6,9 +6,8 @@ on:
       - main
 
   pull_request:
-    types:
-      - opened
-      - edited
+    types: [ opened, edited ]
+
 
 jobs:
   black:
