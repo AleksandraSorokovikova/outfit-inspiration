@@ -1,6 +1,11 @@
+boto3==1.28.70
+botocore==1.31.70
+jmespath==1.0.1
 numpy==1.26.1
 pandas==2.1.1
 python-dateutil==2.8.2
 pytz==2023.3.post1
+s3transfer==0.7.0
 six==1.16.0
 tzdata==2023.3
+urllib3==2.0.7
