@@ -25,5 +25,5 @@ jobs:
     - name: Install dependencies
       run: pip install black
 
-    - name: Run MyPy
+    - name: Run Black
       run: black .
