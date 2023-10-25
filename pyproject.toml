@@ -10,6 +10,7 @@ warn_redundant_casts = true
 warn_unused_configs = true
 warn_unused_ignores = true
 allow_redefinition = true
+ignore_missing_imports = true
 
 [tool.poetry]
 name = "outfit-inspiration"

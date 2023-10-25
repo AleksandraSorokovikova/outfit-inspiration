@@ -6,11 +6,11 @@ on:
       - main
 
   pull_request:
-    types:
-      - opened
+    types: [ opened, edited ]
+
 
 jobs:
-  mypy:
+  black:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,5 +25,5 @@ jobs:
     - name: Install dependencies
       run: pip install black
 
-    - name: Run MyPy
+    - name: Run Black
       run: black .
