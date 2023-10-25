@@ -1,4 +1,4 @@
-name: MyPy
+name: Black
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         python-version: 3.11
 
     - name: Install dependencies
-      run: pip install mypy
+      run: pip install black
 
     - name: Run MyPy
-      run: mypy .
+      run: black .
