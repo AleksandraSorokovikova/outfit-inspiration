@@ -3,14 +3,14 @@ import os
 
 from botocore.response import StreamingBody
 from dotenv import load_dotenv
-from data_exceptions import *
+import data_exceptions
 
 load_dotenv()
 
 bucket_name = "outfit-insiration-database"
 
 
-def create_client(create_resource=False):
+def create_client(create_resource: bool = False) -> boto3.client | boto3.resource:
     try:
         if create_resource:
             client = boto3.resource(
@@ -27,7 +27,7 @@ def create_client(create_resource=False):
                 region_name="eu-north-1",
             )
     except Exception as e:
-        raise ConnectionException("Could not connect to S3: " + str(e))
+        raise data_exceptions.ConnectionException("Could not connect to S3: " + str(e))
 
     return client
 
@@ -39,10 +39,12 @@ def upload_file(path: str, key: str) -> None:
     try:
         client.upload_file(Filename=path, Bucket=bucket_name, Key=key)
     except Exception as e:
-        raise UploadingException('Could not upload file "{0}": '.format(path) + str(e))
+        raise data_exceptions.UploadingException(
+            'Could not upload file "{0}": '.format(path) + str(e)
+        )
 
 
-def get_bucket_size():
+def get_bucket_size() -> float:
     client = create_client(create_resource=True)
 
     try:
@@ -50,23 +52,27 @@ def get_bucket_size():
         size_in_bytes = sum([key.size for key in bucket.objects.all()])
         return size_in_bytes / (1024**2)
     except Exception as e:
-        raise BucketSizeException("Could not count size:" + str(e))
+        raise data_exceptions.BucketSizeException("Could not count size:" + str(e))
 
 
 def upload_files_from_folder(
-    path: str, keys: (list[str] | None) = None, allowed_size_in_mb: int = 4608
+    path: str, keys: list[str] | None = None, allowed_size_in_mb: int = 4608
 ) -> None:
 
     bucket_size = get_bucket_size()
     print(bucket_size)
 
     if bucket_size >= allowed_size_in_mb:
-        raise BucketOverflowException("Bucket is full, could not upload files")
+        raise data_exceptions.BucketOverflowException(
+            "Bucket is full, could not upload files"
+        )
 
     client = create_client()
     files = os.listdir(path)
     if keys and len(files) != len(keys):
-        raise FilesKeysExceptions("Number of files does not equal to number of keys")
+        raise data_exceptions.FilesKeysExceptions(
+            "Number of files does not equal to number of keys"
+        )
 
     for i, file in enumerate(files):
         key = file if not keys else keys[i]
@@ -75,13 +81,13 @@ def upload_files_from_folder(
         bucket_size += os.path.getsize(path_to_file) / (1024**2)
         print(os.path.getsize(path_to_file), bucket_size)
         if bucket_size >= allowed_size_in_mb:
-            raise BucketOverflowException(
+            raise data_exceptions.BucketOverflowException(
                 "Bucket is full, could not upload the rest of files"
             )
         try:
             client.upload_file(Filename=path_to_file, Bucket=bucket_name, Key=key)
         except Exception as e:
-            raise UploadingException(
+            raise data_exceptions.UploadingException(
                 'Could not upload file "{0}": '.format(path) + str(e)
             )
 
@@ -92,18 +98,22 @@ def get_file(key: str) -> StreamingBody:
     try:
         file = client.get_object(Bucket=bucket_name, Key=key)["Body"]
     except Exception as e:
-        raise GetFileExceptions("Could not get file: " + str(e))
+        raise data_exceptions.GetFileExceptions("Could not get file: " + str(e))
     return file
 
 
-def _save_file(key: str, client, path_to_save: str):
+def _save_file(
+    key: str, client: boto3.client | boto3.resource, path_to_save: str
+) -> None:
     try:
         client.download_file(Bucket=bucket_name, Key=key, Filename=path_to_save)
     except Exception as e:
-        raise GetSaveFileExceptions("Could not get file {0}: ".format(key) + str(e))
+        raise data_exceptions.GetSaveFileExceptions(
+            "Could not get file {0}: ".format(key) + str(e)
+        )
 
 
-def get_and_save_files(keys: (str | list[str]), path_to_save: str):
+def get_and_save_files(keys: str | list[str], path_to_save: str) -> None:
     client = create_client()
 
     if isinstance(keys, str):
