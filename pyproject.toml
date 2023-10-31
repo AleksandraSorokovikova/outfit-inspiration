@@ -1,4 +1,4 @@
-[tool.mypy]
+[ttool.mypy]
 python_version = "3.10"
 files = ["data"]
 explicit_package_bases = true
@@ -37,6 +37,7 @@ s3transfer = "0.7.0"
 six = "1.16.0"
 tzdata = "2023.3"
 urllib3 = "2.0.7"
+tqdm = "^4.66.1"
 
 [tool.poetry.group.dev.dependencies]  # development process dependencies
 black = "^22.12"
