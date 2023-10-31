@@ -1,7 +1,7 @@
-import boto3
+import boto3  # type: ignore
 import os
 
-from botocore.response import StreamingBody
+from botocore.response import StreamingBody  # type: ignore
 from dotenv import load_dotenv
 import data_exceptions
 from tqdm import tqdm
@@ -34,7 +34,6 @@ def create_client(create_resource: bool = False) -> boto3.client | boto3.resourc
 
 
 def upload_file(path: str, key: str) -> None:
-
     client = create_client()
 
     try:
@@ -51,15 +50,14 @@ def get_bucket_size() -> float:
     try:
         bucket = client.Bucket(bucket_name)
         size_in_bytes = sum([key.size for key in bucket.objects.all()])
-        return size_in_bytes / (1024**2)
+        return size_in_bytes / (1024 ** 2)
     except Exception as e:
         raise data_exceptions.BucketSizeException("Could not count size:" + str(e))
 
 
 def upload_files_from_folder(
-    path: str, keys: list[str] | None = None, allowed_size_in_mb: int = 4608
+        path: str, keys: list[str] | None = None, allowed_size_in_mb: int = 4608
 ) -> None:
-
     bucket_size = get_bucket_size()
     print(bucket_size)
 
@@ -79,7 +77,7 @@ def upload_files_from_folder(
         key = file if not keys else keys[i]
         path_to_file = path + "/" + file
         print(path_to_file)
-        bucket_size += os.path.getsize(path_to_file) / (1024**2)
+        bucket_size += os.path.getsize(path_to_file) / (1024 ** 2)
         print(os.path.getsize(path_to_file), bucket_size)
         if bucket_size >= allowed_size_in_mb:
             raise data_exceptions.BucketOverflowException(
@@ -103,7 +101,7 @@ def get_file(key: str) -> StreamingBody:
 
 
 def _save_file(
-    key: str, client: boto3.client | boto3.resource, path_to_save: str
+        key: str, client: boto3.client | boto3.resource, path_to_save: str
 ) -> None:
     try:
         client.download_file(Bucket=bucket_name, Key=key, Filename=path_to_save)
