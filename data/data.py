@@ -4,6 +4,7 @@ import os
 from botocore.response import StreamingBody
 from dotenv import load_dotenv
 import data_exceptions
+from tqdm import tqdm
 
 load_dotenv()
 
@@ -74,7 +75,7 @@ def upload_files_from_folder(
             "Number of files does not equal to number of keys"
         )
 
-    for i, file in enumerate(files):
+    for i, file in enumerate(tqdm(files)):
         key = file if not keys else keys[i]
         path_to_file = path + "/" + file
         print(path_to_file)
@@ -94,7 +95,6 @@ def upload_files_from_folder(
 
 def get_file(key: str) -> StreamingBody:
     client = create_client()
-    # file = client.meta.client.download_file('mybucket', 'hello.txt', '/tmp/hello.txt')
     try:
         file = client.get_object(Bucket=bucket_name, Key=key)["Body"]
     except Exception as e:
@@ -119,5 +119,5 @@ def get_and_save_files(keys: str | list[str], path_to_save: str) -> None:
     if isinstance(keys, str):
         _save_file(keys, client, path_to_save)
     else:
-        for key in keys:
+        for key in tqdm(keys):
             _save_file(key, client, path_to_save + "/" + key)
