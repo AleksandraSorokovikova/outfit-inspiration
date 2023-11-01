@@ -1,9 +1,11 @@
+from typing import Union
+
 import boto3  # type: ignore
 import os
 
 from botocore.response import StreamingBody  # type: ignore
 from dotenv import load_dotenv
-import data_exceptions
+from data import data_exceptions
 from tqdm import tqdm
 
 load_dotenv()
@@ -11,7 +13,7 @@ load_dotenv()
 bucket_name = "outfit-insiration-database"
 
 
-def create_client(create_resource: bool = False) -> boto3.client | boto3.resource:
+def create_client(create_resource: bool = False) -> Union[boto3.client, boto3.resource]:
     try:
         if create_resource:
             client = boto3.resource(
@@ -101,7 +103,7 @@ def get_file(key: str) -> StreamingBody:
 
 
 def _save_file(
-        key: str, client: boto3.client | boto3.resource, path_to_save: str
+        key: str, client: Union[boto3.client, boto3.resource], path_to_save: str
 ) -> None:
     try:
         client.download_file(Bucket=bucket_name, Key=key, Filename=path_to_save)
@@ -119,3 +121,4 @@ def get_and_save_files(keys: str | list[str], path_to_save: str) -> None:
     else:
         for key in tqdm(keys):
             _save_file(key, client, path_to_save + "/" + key)
+
