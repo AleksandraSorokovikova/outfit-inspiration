@@ -594,6 +594,17 @@ files = [
 ]
 
 [[package]]
+name = "keras"
+version = "2.14.0"
+description = "Deep learning for humans."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "keras-2.14.0-py3-none-any.whl", hash = "sha256:d7429d1d2131cc7eb1f2ea2ec330227c7d9d38dab3dfdf2e78defee4ecc43fcd"},
+    {file = "keras-2.14.0.tar.gz", hash = "sha256:22788bdbc86d9988794fe9703bb5205141da797c4faeeb59497c58c3d94d34ed"},
+]
+
+[[package]]
 name = "multidict"
 version = "6.0.4"
 description = "multidict implementation"
@@ -1446,4 +1457,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11, <3.13"
-content-hash = "afa2a6ff57e783c6318dd92cee349f286aea84624728271e5b4b2e30e9d7a9e9"
+content-hash = "927b47bbf5684cadf0354f1677894c8c7a5898d785553c205eceb926481cb65c"
