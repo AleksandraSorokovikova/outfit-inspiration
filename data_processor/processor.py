@@ -20,7 +20,8 @@ def resize_and_save_image(path_to_src_image: str,
 
 
 def preprocess_image(example, index, index_to_id):
-    image = np.asarray(example['image'])
+    image = np.array(example['image'])
+    image = np.expand_dims(image, axis=0)
     label = example['label']
     processed_image = preprocess_input(image)
 
