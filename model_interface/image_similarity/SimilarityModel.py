@@ -1,4 +1,4 @@
-from config import *
+from model_interface.image_similarity.config import *
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import GlobalAveragePooling2D, Dense, Input
 from keras.models import Model
@@ -14,7 +14,7 @@ class SimilarityModel:
     image_size = (224, 224)
     classification_model = None
     similarity_model = None
-    number_of_classes = None
+    number_of_classes = NUMBER_OF_CLASSES
     train_size = None
     validation_size = None
     optimizer = Adam(learning_rate=INIT_LR)
@@ -59,7 +59,7 @@ class SimilarityModel:
             shuffle=True,
             batch_size=BATCH_SIZE
         )
-        self.number_of_classes = train.num_classes
+        assert self.number_of_classes == train.num_classes
         self.train_size = len(train.filenames)
         return train, validation, test
 

@@ -12,7 +12,9 @@ TRAIN_SPLIT = 0.8
 
 INIT_LR = 1e-4
 BATCH_SIZE = 128
-NUM_EPOCHS = 20
+NUM_EPOCHS = 5
+
+NUMBER_OF_CLASSES = 17
 
 MODEL_PATH = "images_similarity.model"
 

@@ -1,6 +1,6 @@
 from keras.src.preprocessing.image import DirectoryIterator
 
-from config import MODEL_PATH, BATCH_SIZE
+from model_interface.image_similarity.config import MODEL_PATH, BATCH_SIZE
 from keras.models import load_model
 import numpy as np
 from keras.applications.resnet50 import preprocess_input
