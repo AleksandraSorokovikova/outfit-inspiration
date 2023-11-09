@@ -11,12 +11,11 @@ class SimilarityModel:
     NUM_EPOCHS = NUM_EPOCHS
     BATCH_SIZE = BATCH_SIZE
     INIT_LR = INIT_LR
-    image_size = (224, 224)
+    image_size = IMAGE_SIZE
     classification_model = None
     similarity_model = None
     number_of_classes = NUMBER_OF_CLASSES
     train_size = None
-    validation_size = None
     optimizer = Adam(learning_rate=INIT_LR)
     imageGenerator = ImageDataGenerator(preprocessing_function=preprocess_input)
 
@@ -33,7 +32,7 @@ class SimilarityModel:
             metrics=["accuracy"]
         )
 
-    def feed_train_sets(self):
+    def feed_train_sets(self, feed_test: bool = True):
         train = self.imageGenerator.flow_from_directory(
             TRAIN_PATH,
             class_mode="categorical",
@@ -51,14 +50,17 @@ class SimilarityModel:
             batch_size=BATCH_SIZE
         )
 
-        test = self.imageGenerator.flow_from_directory(
-            TEST_PATH,
-            class_mode="categorical",
-            target_size=self.image_size,
-            color_mode="rgb",
-            shuffle=True,
-            batch_size=BATCH_SIZE
-        )
+        if feed_test:
+            test = self.imageGenerator.flow_from_directory(
+                TEST_PATH,
+                class_mode="categorical",
+                target_size=self.image_size,
+                color_mode="rgb",
+                shuffle=True,
+                batch_size=BATCH_SIZE
+            )
+        else:
+            test = []
         assert self.number_of_classes == train.num_classes
         self.train_size = len(train.filenames)
         return train, validation, test
@@ -73,8 +75,7 @@ class SimilarityModel:
         )
 
     def feed_similarity_model(self):
-        self.classification_model.layers.pop()
-        self.similarity_model = Model(self.classification_model.input, self.classification_model.layers[-1].output)
+        self.similarity_model = Model(self.classification_model.input, self.classification_model.layers[-2].output)
 
     def save_model(self):
-        self.similarity_model.save(MODEL_PATH)
+        self.similarity_model.save(MODEL_PATH, save_format='h5')
