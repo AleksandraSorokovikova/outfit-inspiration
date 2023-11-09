@@ -14,6 +14,8 @@ INIT_LR = 1e-4
 BATCH_SIZE = 128
 NUM_EPOCHS = 20
 
+NUMBER_OF_CLASSES = 17
+
 MODEL_PATH = "images_similarity.model"
 
 MODEL_INTERFACE_PATH = "images_similarity_interface.pickle"
