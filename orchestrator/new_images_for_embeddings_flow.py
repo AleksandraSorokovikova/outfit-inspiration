@@ -7,14 +7,14 @@ import os
 import json
 
 
-def load_new_images():
+def load_new_images() -> (str, str):
     images_folder = '/Users/Aleksandra.Sorokovikova/DL_project/data/images_data'
     images_description = ('/Users/Aleksandra.Sorokovikova/DL_project/data'
                           '/images_for_classification_category_filename_dataframe_test.csv')
     return images_folder, images_description
 
 
-def preprocess_images(path_to_images_folder: str, path_to_images_description: str):
+def preprocess_images(path_to_images_folder: str, path_to_images_description: str) -> (str, dict[str, dict]):
     folder_dataset = 'images_dataset'
     images_description = pd.read_csv(path_to_images_description)
     index_to_id = create_images_folder(
@@ -27,7 +27,10 @@ def preprocess_images(path_to_images_folder: str, path_to_images_description: st
     return folder_dataset, index_to_id
 
 
-def upload_preprocessed_images_to_database(path_to_processed_images: str, index_to_id: dict[str, dict]):
+def upload_preprocessed_images_to_database(
+        path_to_processed_images: str,
+        index_to_id: dict[str, dict]
+) -> None:
     all_files = []
     for address, dirs, files in os.walk(path_to_processed_images):
         for name in files:
