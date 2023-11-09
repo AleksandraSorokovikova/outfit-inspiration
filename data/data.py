@@ -60,8 +60,15 @@ def get_bucket_size() -> float:
 def upload_files_from_folder(
         path: str, keys: list[str] | None = None, allowed_size_in_mb: int = 4608
 ) -> None:
+    files = os.listdir(path)
+    paths_to_files = [f'{path}/{file}' for file in files]
+    upload_files(paths=paths_to_files, keys=keys, allowed_size_in_mb=allowed_size_in_mb)
+
+
+def upload_files(
+        paths: list[str], keys: list[str] | None = None, allowed_size_in_mb: int = 4608
+) -> None:
     bucket_size = get_bucket_size()
-    print(bucket_size)
 
     if bucket_size >= allowed_size_in_mb:
         raise data_exceptions.BucketOverflowException(
@@ -69,27 +76,23 @@ def upload_files_from_folder(
         )
 
     client = create_client()
-    files = os.listdir(path)
-    if keys and len(files) != len(keys):
+    if keys and len(paths) != len(keys):
         raise data_exceptions.FilesKeysExceptions(
             "Number of files does not equal to number of keys"
         )
 
-    for i, file in enumerate(tqdm(files)):
+    for i, file in enumerate(tqdm(paths)):
         key = file if not keys else keys[i]
-        path_to_file = path + "/" + file
-        print(path_to_file)
-        bucket_size += os.path.getsize(path_to_file) / (1024 ** 2)
-        print(os.path.getsize(path_to_file), bucket_size)
+        bucket_size += os.path.getsize(file) / (1024 ** 2)
         if bucket_size >= allowed_size_in_mb:
             raise data_exceptions.BucketOverflowException(
                 "Bucket is full, could not upload the rest of files"
             )
         try:
-            client.upload_file(Filename=path_to_file, Bucket=bucket_name, Key=key)
+            client.upload_file(Filename=file, Bucket=bucket_name, Key=key)
         except Exception as e:
             raise data_exceptions.UploadingException(
-                'Could not upload file "{0}": '.format(path) + str(e)
+                'Could not upload file "{0}": '.format(file) + str(e)
             )
 
 
@@ -121,4 +124,3 @@ def get_and_save_files(keys: str | list[str], path_to_save: str) -> None:
     else:
         for key in tqdm(keys):
             _save_file(key, client, path_to_save + "/" + key)
-
