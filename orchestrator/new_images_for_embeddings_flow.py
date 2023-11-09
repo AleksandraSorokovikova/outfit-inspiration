@@ -10,7 +10,7 @@ import json
 def load_new_images() -> (str, str):
     images_folder = '/Users/Aleksandra.Sorokovikova/DL_project/data/images_data'
     images_description = ('/Users/Aleksandra.Sorokovikova/DL_project/data'
-                          '/images_for_classification_category_filename_dataframe_test.csv')
+                          '/images_for_classification_category_filename_dataframe.csv')
     return images_folder, images_description
 
 

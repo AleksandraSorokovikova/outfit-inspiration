@@ -1,0 +1,80 @@
+from config import *
+from keras.preprocessing.image import ImageDataGenerator
+from keras.layers import GlobalAveragePooling2D, Dense, Input
+from keras.models import Model
+from keras.optimizers import Adam
+from keras.applications.resnet50 import preprocess_input, ResNet50
+from keras.losses import CategoricalCrossentropy
+
+
+class SimilarityModel:
+    NUM_EPOCHS = NUM_EPOCHS
+    BATCH_SIZE = BATCH_SIZE
+    INIT_LR = INIT_LR
+    image_size = (224, 224)
+    classification_model = None
+    similarity_model = None
+    number_of_classes = None
+    train_size = None
+    validation_size = None
+    optimizer = Adam(learning_rate=INIT_LR)
+    imageGenerator = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+    def init_layers(self):
+        model = ResNet50(weights='imagenet', include_top=False, input_shape=(self.image_size[0], self.image_size[1], 3))
+        inputs = Input(shape=(self.image_size[0], self.image_size[1], 3))
+        x = model(inputs)
+        x = GlobalAveragePooling2D()(x)
+        outputs = Dense(self.number_of_classes, activation='softmax')(x)
+        self.classification_model = Model(inputs=inputs, outputs=outputs)
+        self.classification_model.compile(
+            loss=CategoricalCrossentropy(),
+            optimizer=self.optimizer,
+            metrics=["accuracy"]
+        )
+
+    def feed_train_sets(self):
+        train = self.imageGenerator.flow_from_directory(
+            TRAIN_PATH,
+            class_mode="categorical",
+            target_size=self.image_size,
+            color_mode="rgb",
+            shuffle=True,
+            batch_size=BATCH_SIZE
+        )
+        validation = self.imageGenerator.flow_from_directory(
+            VAL_PATH,
+            class_mode="categorical",
+            target_size=self.image_size,
+            color_mode="rgb",
+            shuffle=True,
+            batch_size=BATCH_SIZE
+        )
+
+        test = self.imageGenerator.flow_from_directory(
+            TEST_PATH,
+            class_mode="categorical",
+            target_size=self.image_size,
+            color_mode="rgb",
+            shuffle=True,
+            batch_size=BATCH_SIZE
+        )
+        self.number_of_classes = train.num_classes
+        self.train_size = len(train.filenames)
+        return train, validation, test
+
+    def train(self, train, validation):
+        self.classification_model.fit(
+            train,
+            steps_per_epoch=self.train_size // BATCH_SIZE,
+            validation_data=validation,
+            validation_steps=len(validation.filenames) // BATCH_SIZE,
+            epochs=NUM_EPOCHS
+        )
+
+    def feed_similarity_model(self):
+        self.classification_model.layers.pop()
+        self.similarity_model = Model(self.classification_model.input, self.classification_model.layers[-1].output)
+
+    def save_model(self):
+        self.similarity_model.save(MODEL_PATH)
