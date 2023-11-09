@@ -5,7 +5,7 @@ import pandas as pd
 from data.data import upload_file, upload_files
 from data_processor.processor import create_images_folder
 import json
-from model_interface.image_similarity.config import BASE_PATH
+from model_interface.image_similarity.config import BASE_PATH, TRAIN_SPLIT, VALIDATION_SPLIT
 
 
 def load_new_images() -> (str, str):
@@ -23,7 +23,9 @@ def preprocess_images(path_to_images_folder: str, path_to_images_description: st
         path_to_folder=path_to_images_folder,
         column_with_image_name='file_name',
         column_with_category_name='category',
-        new_folder_name=folder_dataset
+        new_folder_name=folder_dataset,
+        train_split=TRAIN_SPLIT,
+        validation_split=VALIDATION_SPLIT
     )
     return folder_dataset, index_to_id
 

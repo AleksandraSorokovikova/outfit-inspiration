@@ -24,7 +24,8 @@ def create_images_folder(
         new_folder_name: str,
         new_size: (int, int) = (224, 224),
         frac: float = 1,
-        train_split: float = 0.8
+        train_split: float = 0.9,
+        validation_split: float = 1
 ) -> dict[str, dict]:
     def process_df(categories: list[str], df: pd.DataFrame, folder_name: str):
         for category in tqdm(sorted(categories)):
@@ -58,7 +59,7 @@ def create_images_folder(
 
     categories = images_description_df[column_with_category_name].unique().tolist()
     train, test = train_test_split(images_description_df.sample(frac=frac), train_size=train_split)
-    test, validation = train_test_split(test, test_size=0.5)
+    test, validation = train_test_split(test, train_size=validation_split)
 
     os.makedirs(f'{new_folder_name}/train')
     os.makedirs(f'{new_folder_name}/validation')
