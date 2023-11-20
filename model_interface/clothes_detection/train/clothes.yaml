@@ -1,0 +1,30 @@
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: ../datasets/clothes 
+train: train.txt 
+val: val.txt
+test: null 
+
+# Classes
+names:
+  0: 'Shoes'
+  1: 'Scarves & Shawls'
+  2: 'Coats & Jackets'
+  3: 'Handbags'
+  4: 'Pants'
+  5: 'Shirts & Tops'
+  6: 'Jewelry'
+  7: 'Sunglasses'
+  8: 'Dresses'
+  9: 'Shorts'
+  10: 'Hats'
+  11: 'Skirts'
+  12: 'Watches'
+  13: 'Socks'
+  14: 'Jumpsuits & Rompers'
+  15: 'Rings'
+  16: 'Belts'
+  17: 'Stockings'
+  18: 'Swimwear'
+  19: 'Gloves & Mittens'
+  20: 'Neckties'
+

@@ -14,7 +14,9 @@ class SimilarityModelInterface:
         embeddings = self.model.predict(processed_images)
         return np.array(embeddings)
 
-    def get_embedding_from_generator(self, path_to_directory: str, include_filenames: bool = False) -> np.array:
+    def get_embedding_from_generator(
+        self, path_to_directory: str, include_filenames: bool = False
+    ) -> np.array:
         image_generator = ImageDataGenerator(preprocessing_function=preprocess_input)
         dataset = image_generator.flow_from_directory(
             path_to_directory,
@@ -22,12 +24,11 @@ class SimilarityModelInterface:
             target_size=IMAGE_SIZE,
             color_mode="rgb",
             shuffle=False,
-            batch_size=BATCH_SIZE
+            batch_size=BATCH_SIZE,
         )
         dataset.reset()
         embeddings = self.model.predict(
-            dataset,
-            steps=(len(dataset.filenames) // BATCH_SIZE) + 1
+            dataset, steps=(len(dataset.filenames) // BATCH_SIZE) + 1
         )
         result = np.array(embeddings)
         if include_filenames:
