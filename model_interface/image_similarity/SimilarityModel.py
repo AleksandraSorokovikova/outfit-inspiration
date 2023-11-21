@@ -78,10 +78,5 @@ class SimilarityModel:
             epochs=NUM_EPOCHS,
         )
 
-    def feed_similarity_model(self):
-        self.similarity_model = Model(
-            self.classification_model.input, self.classification_model.layers[-2].output
-        )
-
     def save_model(self):
-        self.similarity_model.save(MODEL_PATH, save_format="h5")
+        self.classification_model.save(MODEL_PATH, save_format="h5")

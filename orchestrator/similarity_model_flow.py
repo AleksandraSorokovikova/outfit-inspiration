@@ -16,7 +16,6 @@ def train_and_save_model():
     model.init_layers()
     train, validation, test = model.feed_train_sets(feed_test=FEED_TEST)
     model.train(train, validation)
-    model.feed_similarity_model()
     model.save_model()
 
 
