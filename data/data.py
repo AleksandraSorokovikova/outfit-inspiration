@@ -52,21 +52,21 @@ def get_bucket_size() -> float:
     try:
         bucket = client.Bucket(bucket_name)
         size_in_bytes = sum([key.size for key in bucket.objects.all()])
-        return size_in_bytes / (1024 ** 2)
+        return size_in_bytes / (1024**2)
     except Exception as e:
         raise data_exceptions.BucketSizeException("Could not count size:" + str(e))
 
 
 def upload_files_from_folder(
-        path: str, keys: list[str] | None = None, allowed_size_in_mb: int = 4608
+    path: str, keys: list[str] | None = None, allowed_size_in_mb: int = 4608
 ) -> None:
     files = os.listdir(path)
-    paths_to_files = [f'{path}/{file}' for file in files]
+    paths_to_files = [f"{path}/{file}" for file in files]
     upload_files(paths=paths_to_files, keys=keys, allowed_size_in_mb=allowed_size_in_mb)
 
 
 def upload_files(
-        paths: list[str], keys: list[str] | None = None, allowed_size_in_mb: int = 4608
+    paths: list[str], keys: list[str] | None = None, allowed_size_in_mb: int = 4608
 ) -> None:
     bucket_size = get_bucket_size()
 
@@ -83,7 +83,7 @@ def upload_files(
 
     for i, file in enumerate(tqdm(paths)):
         key = file if not keys else keys[i]
-        bucket_size += os.path.getsize(file) / (1024 ** 2)
+        bucket_size += os.path.getsize(file) / (1024**2)
         if bucket_size >= allowed_size_in_mb:
             raise data_exceptions.BucketOverflowException(
                 "Bucket is full, could not upload the rest of files"
@@ -106,7 +106,7 @@ def get_file(key: str) -> StreamingBody:
 
 
 def _save_file(
-        key: str, client: Union[boto3.client, boto3.resource], path_to_save: str
+    key: str, client: Union[boto3.client, boto3.resource], path_to_save: str
 ) -> None:
     try:
         client.download_file(Bucket=bucket_name, Key=key, Filename=path_to_save)

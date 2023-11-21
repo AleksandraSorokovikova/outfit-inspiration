@@ -20,16 +20,20 @@ class SimilarityModel:
     imageGenerator = ImageDataGenerator(preprocessing_function=preprocess_input)
 
     def init_layers(self):
-        model = ResNet50(weights='imagenet', include_top=False, input_shape=(self.image_size[0], self.image_size[1], 3))
+        model = ResNet50(
+            weights="imagenet",
+            include_top=False,
+            input_shape=(self.image_size[0], self.image_size[1], 3),
+        )
         inputs = Input(shape=(self.image_size[0], self.image_size[1], 3))
         x = model(inputs)
         x = GlobalAveragePooling2D()(x)
-        outputs = Dense(self.number_of_classes, activation='softmax')(x)
+        outputs = Dense(self.number_of_classes, activation="softmax")(x)
         self.classification_model = Model(inputs=inputs, outputs=outputs)
         self.classification_model.compile(
             loss=CategoricalCrossentropy(),
             optimizer=self.optimizer,
-            metrics=["accuracy"]
+            metrics=["accuracy"],
         )
 
     def feed_train_sets(self, feed_test: bool = True):
@@ -39,7 +43,7 @@ class SimilarityModel:
             target_size=self.image_size,
             color_mode="rgb",
             shuffle=True,
-            batch_size=BATCH_SIZE
+            batch_size=BATCH_SIZE,
         )
         validation = self.imageGenerator.flow_from_directory(
             VAL_PATH,
@@ -47,7 +51,7 @@ class SimilarityModel:
             target_size=self.image_size,
             color_mode="rgb",
             shuffle=True,
-            batch_size=BATCH_SIZE
+            batch_size=BATCH_SIZE,
         )
 
         if feed_test:
@@ -57,7 +61,7 @@ class SimilarityModel:
                 target_size=self.image_size,
                 color_mode="rgb",
                 shuffle=True,
-                batch_size=BATCH_SIZE
+                batch_size=BATCH_SIZE,
             )
         else:
             test = []
@@ -71,11 +75,13 @@ class SimilarityModel:
             steps_per_epoch=self.train_size // BATCH_SIZE,
             validation_data=validation,
             validation_steps=len(validation.filenames) // BATCH_SIZE,
-            epochs=NUM_EPOCHS
+            epochs=NUM_EPOCHS,
         )
 
     def feed_similarity_model(self):
-        self.similarity_model = Model(self.classification_model.input, self.classification_model.layers[-2].output)
+        self.similarity_model = Model(
+            self.classification_model.input, self.classification_model.layers[-2].output
+        )
 
     def save_model(self):
-        self.similarity_model.save(MODEL_PATH, save_format='h5')
+        self.similarity_model.save(MODEL_PATH, save_format="h5")
