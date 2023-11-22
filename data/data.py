@@ -1,8 +1,11 @@
+from io import StringIO
 from typing import Union
 
 import boto3  # type: ignore
+import json
 import os
 
+import pandas as pd
 from botocore.response import StreamingBody  # type: ignore
 from dotenv import load_dotenv
 from data import data_exceptions
@@ -124,3 +127,28 @@ def get_and_save_files(keys: str | list[str], path_to_save: str) -> None:
     else:
         for key in tqdm(keys):
             _save_file(key, client, path_to_save + "/" + key)
+
+
+def get_and_save_folder(path_to_folder: str, key_folder_name: str) -> None:
+    resource = create_client(create_resource=True)
+    bucket = resource.Bucket(bucket_name)
+    os.makedirs(path_to_folder + key_folder_name, exist_ok=True)
+
+    for obj in tqdm(bucket.objects.filter(Prefix=key_folder_name)):
+        if not os.path.exists(os.path.dirname(obj.key)):
+            os.makedirs(os.path.dirname(obj.key))
+        bucket.download_file(obj.key, path_to_folder + obj.key)
+
+
+def get_df_from_csv(csv_filename: str) -> pd.DataFrame:
+    csv_table = get_file(csv_filename).read().decode('utf-8')
+    df = pd.read_csv(StringIO(csv_table))
+    return df
+
+
+def get_dict_from_json(json_filename: str, convert_key_to_digit: bool = False) -> dict:
+    json_file = get_file(json_filename).read().decode('utf-8')
+    dict_object = json.loads(json_file)
+    if convert_key_to_digit:
+        dict_object = {int(i): dict_object[i] for i in dict_object}
+    return dict_object

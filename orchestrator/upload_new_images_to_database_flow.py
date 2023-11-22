@@ -61,3 +61,7 @@ def flow():
     images_folder, images_description = load_new_images()
     folder_dataset, index_to_id = preprocess_images(images_folder, images_description)
     upload_preprocessed_images_to_database(folder_dataset, index_to_id)
+
+
+if __name__ == '__main__':
+    flow()

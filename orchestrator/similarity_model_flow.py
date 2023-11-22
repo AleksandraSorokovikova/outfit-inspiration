@@ -4,6 +4,8 @@ from model_interface.image_similarity.config import (
     MODEL_INTERFACE_PATH,
     FEED_TEST,
     MODEL_PATH,
+    MODEL_NAME,
+    MODEL_INTERFACE_NAME
 )
 from model_interface.image_similarity.SimilarityModel import SimilarityModel
 from model_interface.image_similarity.SimilarityModelInterface import (
@@ -26,11 +28,15 @@ def save_model_interface():
 
 
 def upload_models():
-    upload_file(MODEL_PATH, "similarity_model_weights.h5")
-    upload_file(MODEL_INTERFACE_PATH, "similarity_model_interface.pickle")
+    upload_file(path=MODEL_PATH, key=MODEL_NAME)
+    upload_file(path=MODEL_INTERFACE_PATH, key=MODEL_INTERFACE_NAME)
 
 
 def flow():
     train_and_save_model()
     save_model_interface()
     upload_models()
+
+
+if __name__ == '__main__':
+    flow()
