@@ -1,12 +1,12 @@
 from io import StringIO
 from typing import Union
 
-import boto3  # type: ignore
+import boto3
 import json
 import os
 
 import pandas as pd
-from botocore.response import StreamingBody  # type: ignore
+from botocore.response import StreamingBody
 from dotenv import load_dotenv
 from data import data_exceptions
 from tqdm import tqdm

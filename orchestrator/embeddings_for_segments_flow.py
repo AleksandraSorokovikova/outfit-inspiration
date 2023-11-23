@@ -22,7 +22,7 @@ from model_interface.config import *
 from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
 
 
-def detect_clothes():
+def detect_clothes() -> None:
     get_and_save_files(path_to_save=model_path, keys=model_name)
     get_and_save_folder(path_to_folder=base_path, key_folder_name=img_name)
     # model = YOLOInterface(model_path, img_dir)
@@ -31,9 +31,9 @@ def detect_clothes():
     # upload_file(path=segments_file_path, key=segments_file_name)
 
 
-def create_embeddings():
+def create_embeddings() -> None:
 
-    def save_and_upload_json(data: dict, path: str, name: str):
+    def save_and_upload_json(data: dict, path: str, name: str) -> None:
         with open(path, "w") as write_file:
             json.dump(data, write_file)
         upload_file(path, name)
@@ -74,7 +74,7 @@ def create_embeddings():
     AnnoyInterface.build_trees_by_dict_and_save(dict_of_classes=class_to_garments, embeddings=garment_to_embedding)
 
 
-def flow():
+def flow() -> None:
     detect_clothes()
     create_embeddings()
 

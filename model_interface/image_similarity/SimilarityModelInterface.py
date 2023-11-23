@@ -1,3 +1,5 @@
+from typing import Any
+
 from keras import Model
 
 from model_interface.image_similarity.config import MODEL_PATH, BATCH_SIZE, IMAGE_SIZE
@@ -8,20 +10,20 @@ from keras.applications.resnet50 import preprocess_input
 
 
 class SimilarityModelInterface:
-    def __init__(self):
+    def __init__(self) -> None:
         self.classification_model = load_model(MODEL_PATH, compile=False)
         self.similarity_model = Model(
             self.classification_model.input, self.classification_model.layers[-2].output
         )
 
-    def get_embeddings(self, images_array: np.array) -> np.array:
+    def get_embeddings(self, images_array: list[np.array]) -> np.array:
         processed_images = np.array([preprocess_input(image) for image in images_array])
         embeddings = self.similarity_model.predict(processed_images)
         return np.array(embeddings)
 
     def get_embedding_from_generator(
         self, path_to_directory: str, include_filenames: bool = False
-    ) -> np.array:
+    ) -> np.ndarray[Any, Any]:
         image_generator = ImageDataGenerator(preprocessing_function=preprocess_input)
         dataset = image_generator.flow_from_directory(
             path_to_directory,

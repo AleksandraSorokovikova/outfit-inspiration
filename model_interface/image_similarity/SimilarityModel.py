@@ -8,10 +8,10 @@ from keras.losses import CategoricalCrossentropy
 
 
 class SimilarityModel:
-    NUM_EPOCHS = NUM_EPOCHS
-    BATCH_SIZE = BATCH_SIZE
-    INIT_LR = INIT_LR
-    image_size = IMAGE_SIZE
+    NUM_EPOCHS: int = NUM_EPOCHS
+    BATCH_SIZE: int = BATCH_SIZE
+    INIT_LR: float = INIT_LR
+    image_size: tuple[int, int] = IMAGE_SIZE
     classification_model = None
     similarity_model = None
     number_of_classes = NUMBER_OF_CLASSES
@@ -19,7 +19,7 @@ class SimilarityModel:
     optimizer = Adam(learning_rate=INIT_LR)
     imageGenerator = ImageDataGenerator(preprocessing_function=preprocess_input)
 
-    def init_layers(self):
+    def init_layers(self) -> None:
         model = ResNet50(
             weights="imagenet",
             include_top=False,
@@ -36,7 +36,7 @@ class SimilarityModel:
             metrics=["accuracy"],
         )
 
-    def feed_train_sets(self, feed_test: bool = True):
+    def feed_train_sets(self, feed_test: bool = True) -> tuple[ImageDataGenerator, ...]:
         train = self.imageGenerator.flow_from_directory(
             TRAIN_PATH,
             class_mode="categorical",
@@ -69,7 +69,9 @@ class SimilarityModel:
         self.train_size = len(train.filenames)
         return train, validation, test
 
-    def train(self, train, validation):
+    def train(self, train: ImageDataGenerator, validation: ImageDataGenerator):
+        assert self.classification_model is not None
+        assert self.train_size is not None
         self.classification_model.fit(
             train,
             steps_per_epoch=self.train_size // BATCH_SIZE,

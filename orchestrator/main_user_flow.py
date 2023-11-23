@@ -41,11 +41,11 @@ def select_top_outfits(detection_classes: list[int], embeddings: np.array):
     return outfits
 
 
-def send_results(source_image: Image_t, outfits: list[str]):
+def send_results(source_image: Image_t, outfits: list[str]) -> None:
     found_images = [Image.open(get_file(f'{img_name}{outfit}')) for outfit in outfits]
     import matplotlib.pyplot as plt
 
-    def show_similar_images(source_image, found_images):
+    def show_similar_images(source_image: Image_t, found_images: Image_t) -> None:
         plt.figure(figsize=(2, 2))
         plt.axis("off")
         plt.imshow(source_image)
@@ -58,7 +58,7 @@ def send_results(source_image: Image_t, outfits: list[str]):
     show_similar_images(source_image, found_images)
 
 
-def flow(path_to_image: str):
+def flow(path_to_image: str) -> None:
     image = upload_image(path_to_image)
     detection_classes, embeddings = get_embeddings(image)
     outfits = select_top_outfits(detection_classes, embeddings)

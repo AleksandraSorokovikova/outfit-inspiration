@@ -12,7 +12,7 @@ from model_interface.image_similarity.config import (
 )
 
 
-def load_new_images() -> (str, str):
+def load_new_images() -> tuple[str, str]:
     images_folder = "/Users/Aleksandra.Sorokovikova/DL_project/data/images_data"
     images_description = (
         "/Users/Aleksandra.Sorokovikova/DL_project/data"
@@ -23,7 +23,7 @@ def load_new_images() -> (str, str):
 
 def preprocess_images(
     path_to_images_folder: str, path_to_images_description: str
-) -> (str, dict[str, dict]):
+) -> tuple[str, dict[str, dict]]:
     folder_dataset = BASE_PATH
     images_description = pd.read_csv(path_to_images_description)
     index_to_id = create_images_folder(

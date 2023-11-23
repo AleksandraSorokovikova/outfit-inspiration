@@ -37,7 +37,7 @@ def resize(
 def resize_and_save_image(
     path_to_src_image: str,
     path_to_target_image: str,
-    new_size: (int, int) = (224, 224)
+    new_size: tuple[int, int] = (224, 224)
 ):
     try:
         image = Image.open(path_to_src_image)
@@ -62,7 +62,7 @@ def create_images_folder(
     column_with_image_name: str,
     column_with_category_name: str,
     new_folder_name: str,
-    new_size: (int, int) = (224, 224),
+    new_size: tuple[int, int] = (224, 224),
     frac: float = 1,
     train_split: float = 0.9,
     validation_split: float = 1,
