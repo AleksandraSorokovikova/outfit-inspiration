@@ -40,3 +40,4 @@ dmypy.json
 .idea/
 .DS_Store
 files
+temp_files
