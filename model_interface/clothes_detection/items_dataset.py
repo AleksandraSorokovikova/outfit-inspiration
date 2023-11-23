@@ -11,9 +11,7 @@ from torchvision.transforms.functional import InterpolationMode as IM
 
 
 class ClothesDataset(Dataset):
-    def __init__(
-        self, annotations_file: str, img_dir: str
-    ) -> None:
+    def __init__(self, annotations_file: str, img_dir: str) -> None:
         self.img_labels = pd.read_csv(annotations_file)
         self.img_dir = img_dir
 
@@ -21,7 +19,10 @@ class ClothesDataset(Dataset):
         return len(self.img_labels)
 
     def resize(
-        self, img: Image_t, target_shape: tuple[int, int], pad_val: tuple[int, int, int] = (255, 255, 255)
+        self,
+        img: Image_t,
+        target_shape: tuple[int, int],
+        pad_val: tuple[int, int, int] = (255, 255, 255),
     ) -> Image:
         original_width, original_height = img.size
         target_width, target_height = target_shape

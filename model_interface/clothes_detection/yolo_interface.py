@@ -16,7 +16,11 @@ class YOLOInterface:
 
         return images
 
-    def detect(self, images: Union[list[str], None] = None, output_path: Union[str, None] = None) -> pd.DataFrame:
+    def detect(
+        self,
+        images: Union[list[str], None] = None,
+        output_path: Union[str, None] = None,
+    ) -> pd.DataFrame:
         if images is None:
             images = self._parse_path()
 

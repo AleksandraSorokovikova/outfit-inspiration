@@ -5,7 +5,7 @@ from model_interface.image_similarity.config import (
     FEED_TEST,
     MODEL_PATH,
     MODEL_NAME,
-    MODEL_INTERFACE_NAME
+    MODEL_INTERFACE_NAME,
 )
 from model_interface.image_similarity.SimilarityModel import SimilarityModel
 from model_interface.image_similarity.SimilarityModelInterface import (
@@ -38,5 +38,5 @@ def flow() -> None:
     upload_models()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     flow()

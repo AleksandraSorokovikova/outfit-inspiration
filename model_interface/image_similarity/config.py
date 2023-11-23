@@ -1,10 +1,10 @@
 import os
 
-base_path = '../files/'
+base_path = "../files/"
 
-ORIG_INPUT_DATASET = f'{base_path}images_data'
+ORIG_INPUT_DATASET = f"{base_path}images_data"
 
-BASE_PATH = f'{base_path}images_dataset'
+BASE_PATH = f"{base_path}images_dataset"
 
 TRAIN_PATH = os.path.sep.join([BASE_PATH, "train"])
 VAL_PATH = os.path.sep.join([BASE_PATH, "validation"])
@@ -23,8 +23,8 @@ NUMBER_OF_CLASSES = 17
 
 IMAGE_SIZE = (224, 224)
 
-MODEL_PATH = f'{base_path}images_similarity.h5'
+MODEL_PATH = f"{base_path}images_similarity.h5"
 MODEL_NAME = "images_similarity.h5"
 
-MODEL_INTERFACE_PATH = f'{base_path}images_similarity_interface.pickle'
+MODEL_INTERFACE_PATH = f"{base_path}images_similarity_interface.pickle"
 MODEL_INTERFACE_NAME = "images_similarity_interface.pickle"

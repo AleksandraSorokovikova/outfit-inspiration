@@ -63,5 +63,5 @@ def flow():
     upload_preprocessed_images_to_database(folder_dataset, index_to_id)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     flow()

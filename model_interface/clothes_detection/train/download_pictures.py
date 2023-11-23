@@ -1,7 +1,7 @@
 from typing import Union
 
 import aiohttp
-import aiofiles # type: ignore
+import aiofiles  # type: ignore
 import asyncio
 import os
 import pandas as pd
@@ -32,7 +32,9 @@ def convert_to_url(signature: str) -> str:
     return prefix % (signature[0:2], signature[2:4], signature[4:6], signature)
 
 
-async def download_and_save_image(session: aiohttp.ClientSession, url: str, save_directory: str, file_name: str) -> None:
+async def download_and_save_image(
+    session: aiohttp.ClientSession, url: str, save_directory: str, file_name: str
+) -> None:
     try:
         async with session.get(url) as response:
             if response.status == 200:

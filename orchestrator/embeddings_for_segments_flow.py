@@ -14,10 +14,13 @@ from model_interface.clothes_detection.config import (
     img_name,
     annotations_file,
     segments_file_path,
-    segments_file_name
+    segments_file_name,
 )
 from data.data import upload_file, get_and_save_files, get_and_save_folder
-from model_interface.image_similarity.config import MODEL_INTERFACE_NAME, MODEL_INTERFACE_PATH
+from model_interface.image_similarity.config import (
+    MODEL_INTERFACE_NAME,
+    MODEL_INTERFACE_PATH,
+)
 from model_interface.config import *
 from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
 
@@ -32,14 +35,13 @@ def detect_clothes() -> None:
 
 
 def create_embeddings() -> None:
-
     def save_and_upload_json(data: dict, path: str, name: str) -> None:
         with open(path, "w") as write_file:
             json.dump(data, write_file)
         upload_file(path, name)
 
     get_and_save_files(keys=MODEL_INTERFACE_NAME, path_to_save=MODEL_INTERFACE_PATH)
-    with open(MODEL_INTERFACE_PATH, 'rb') as f:
+    with open(MODEL_INTERFACE_PATH, "rb") as f:
         similarity_interface = pickle.load(f)
 
     dataset = ClothesDataset(segments_file_path, img_dir)
@@ -50,7 +52,9 @@ def create_embeddings() -> None:
     outfit_to_garments = defaultdict(list)
     garment_to_embedding = {}
 
-    for batch in np.array_split(np.arange(0, len(dataset)), len(dataset) // batch_size + 1):
+    for batch in np.array_split(
+        np.arange(0, len(dataset)), len(dataset) // batch_size + 1
+    ):
         images = []
 
         for i in batch:
@@ -66,12 +70,22 @@ def create_embeddings() -> None:
         for i, index in enumerate(batch):
             garment_to_embedding[int(index)] = embeddings[i].tolist()
 
-    save_and_upload_json(garment_to_outfit, garment_to_outfit_path, garment_to_outfit_name)
-    save_and_upload_json(dict(class_to_garments), class_to_garment_path, class_to_garment_name)
-    save_and_upload_json(dict(outfit_to_garments), outfit_to_garments_path, outfit_to_garments_name)
-    save_and_upload_json(garment_to_embedding, garment_to_embedding_path, garment_to_embedding_name)
+    save_and_upload_json(
+        garment_to_outfit, garment_to_outfit_path, garment_to_outfit_name
+    )
+    save_and_upload_json(
+        dict(class_to_garments), class_to_garment_path, class_to_garment_name
+    )
+    save_and_upload_json(
+        dict(outfit_to_garments), outfit_to_garments_path, outfit_to_garments_name
+    )
+    save_and_upload_json(
+        garment_to_embedding, garment_to_embedding_path, garment_to_embedding_name
+    )
 
-    AnnoyInterface.build_trees_by_dict_and_save(dict_of_classes=class_to_garments, embeddings=garment_to_embedding)
+    AnnoyInterface.build_trees_by_dict_and_save(
+        dict_of_classes=class_to_garments, embeddings=garment_to_embedding
+    )
 
 
 def flow() -> None:
@@ -79,5 +93,5 @@ def flow() -> None:
     create_embeddings()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     flow()
