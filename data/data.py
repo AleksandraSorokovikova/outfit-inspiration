@@ -1,12 +1,12 @@
 from io import StringIO
 from typing import Union
 
-import boto3  # type: ignore
+import boto3
 import json
 import os
 
 import pandas as pd
-from botocore.response import StreamingBody  # type: ignore
+from botocore.response import StreamingBody
 from dotenv import load_dotenv
 from data import data_exceptions
 from tqdm import tqdm
@@ -141,13 +141,13 @@ def get_and_save_folder(path_to_folder: str, key_folder_name: str) -> None:
 
 
 def get_df_from_csv(csv_filename: str) -> pd.DataFrame:
-    csv_table = get_file(csv_filename).read().decode('utf-8')
+    csv_table = get_file(csv_filename).read().decode("utf-8")
     df = pd.read_csv(StringIO(csv_table))
     return df
 
 
 def get_dict_from_json(json_filename: str, convert_key_to_digit: bool = False) -> dict:
-    json_file = get_file(json_filename).read().decode('utf-8')
+    json_file = get_file(json_filename).read().decode("utf-8")
     dict_object = json.loads(json_file)
     if convert_key_to_digit:
         dict_object = {int(i): dict_object[i] for i in dict_object}

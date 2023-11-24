@@ -1,5 +1,7 @@
+from typing import Union
+
 import aiohttp
-import aiofiles
+import aiofiles  # type: ignore
 import asyncio
 import os
 import pandas as pd
@@ -10,7 +12,7 @@ df = pd.read_csv(
 )
 
 
-def files_name(directory):
+def files_name(directory: str) -> Union[list[str], None]:
     try:
         files = os.listdir(directory)
         files = [
@@ -25,12 +27,14 @@ def files_name(directory):
         return None
 
 
-def convert_to_url(signature):
+def convert_to_url(signature: str) -> str:
     prefix = "http://i.pinimg.com/400x/%s/%s/%s/%s.jpg"
     return prefix % (signature[0:2], signature[2:4], signature[4:6], signature)
 
 
-async def download_and_save_image(session, url, save_directory, file_name):
+async def download_and_save_image(
+    session: aiohttp.ClientSession, url: str, save_directory: str, file_name: str
+) -> None:
     try:
         async with session.get(url) as response:
             if response.status == 200:
@@ -45,14 +49,17 @@ async def download_and_save_image(session, url, save_directory, file_name):
         print(f"Error downloading image: {e}")
 
 
-async def main():
+async def main() -> None:
     save_directory = "/Users/evgeniia.vu/Desktop/CUB study/ADL/datasets/clothes/images"
     args_list = []
 
     async with aiohttp.ClientSession() as session:
         files = files_name(save_directory)
         unique_files = df.image_signature.unique()
-        rest = list(set(unique_files) - set(files))
+        if files:
+            rest = list(set(unique_files) - set(files))
+        else:
+            rest = unique_files
 
         for image_sig in rest:
             url = convert_to_url(image_sig)

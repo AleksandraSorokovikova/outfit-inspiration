@@ -1,12 +1,6 @@
 name: MyPy
 
-on:
-  push:
-    branches:
-      - main
-
-  pull_request:
-    types: [opened, edited]
+on: [pull_request]
 
 jobs:
   mypy:
@@ -21,8 +15,17 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        export PATH="$HOME/.poetry/bin:$PATH"
+        poetry --version
+
     - name: Install dependencies
-      run: pip install mypy
+      run: poetry install
 
     - name: Run MyPy
-      run: mypy .
+      run: poetry run mypy .
+
+    - name: Display MyPy version
+      run: poetry run mypy --version

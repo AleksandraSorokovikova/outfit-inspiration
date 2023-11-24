@@ -6,17 +6,21 @@ import torch
 
 
 class YOLOInterface:
-    def __init__(self, weights_path, dir_path):
+    def __init__(self, weights_path: str, dir_path: str) -> None:
         self._model = torch.hub.load("ultralytics/yolov5", "custom", path=weights_path)
         self._dir_path = dir_path
 
-    def _parse_path(self):
+    def _parse_path(self) -> list[str]:
         all_files = os.listdir(self._dir_path)
         images = [os.path.join(self._dir_path, img.strip()) for img in all_files]
 
         return images
 
-    def detect(self, images: Union[list[str], None] = None, output_path: str = None):
+    def detect(
+        self,
+        images: Union[list[str], None] = None,
+        output_path: Union[str, None] = None,
+    ) -> pd.DataFrame:
         if images is None:
             images = self._parse_path()
 

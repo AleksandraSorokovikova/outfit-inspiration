@@ -8,9 +8,9 @@ import numpy as np
 
 
 def resize(
-        img: Image_t,
-        target_shape: tuple[int, int] = (224, 224),
-) -> np.array:
+    img: Image_t,
+    target_shape: tuple[int, int] = (224, 224),
+) -> Image_t:
     original_width, original_height = img.size
     target_width, target_height = target_shape
 
@@ -37,7 +37,7 @@ def resize(
 def resize_and_save_image(
     path_to_src_image: str,
     path_to_target_image: str,
-    new_size: (int, int) = (224, 224)
+    new_size: tuple[int, int] = (224, 224),
 ):
     try:
         image = Image.open(path_to_src_image)
@@ -48,8 +48,7 @@ def resize_and_save_image(
 
 
 def resize_image(
-    path_to_src_image: str,
-    new_size: (int, int) = (224, 224)
+    path_to_src_image: str, new_size: tuple[int, int] = (224, 224)
 ) -> Image_t:
     image = Image.open(path_to_src_image)
     image_resized = resize(image, new_size)
@@ -62,7 +61,7 @@ def create_images_folder(
     column_with_image_name: str,
     column_with_category_name: str,
     new_folder_name: str,
-    new_size: (int, int) = (224, 224),
+    new_size: tuple[int, int] = (224, 224),
     frac: float = 1,
     train_split: float = 0.9,
     validation_split: float = 1,
