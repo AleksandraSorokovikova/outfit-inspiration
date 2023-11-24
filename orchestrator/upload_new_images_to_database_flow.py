@@ -9,15 +9,14 @@ from model_interface.image_similarity.config import (
     BASE_PATH,
     TRAIN_SPLIT,
     VALIDATION_SPLIT,
+    ORIG_INPUT_DATASET,
+    IMAGES_DESCRIPTION_PATH
 )
 
 
 def load_new_images() -> tuple[str, str]:
-    images_folder = "/Users/Aleksandra.Sorokovikova/DL_project/data/images_data"
-    images_description = (
-        "/Users/Aleksandra.Sorokovikova/DL_project/data"
-        "/images_for_classification_category_filename_dataframe.csv"
-    )
+    images_folder = ORIG_INPUT_DATASET
+    images_description = IMAGES_DESCRIPTION_PATH
     return images_folder, images_description
 
 

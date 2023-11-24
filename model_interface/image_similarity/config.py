@@ -2,9 +2,10 @@ import os
 
 base_path = "../files/"
 
-ORIG_INPUT_DATASET = f"{base_path}images_data"
+ORIG_INPUT_DATASET = f"{base_path}images_polyvore_data"
+IMAGES_DESCRIPTION_PATH = f"{base_path}images_caption_polyvore.csv"
 
-BASE_PATH = f"{base_path}images_dataset"
+BASE_PATH = f"{base_path}images_polyvore_dataset"
 
 TRAIN_PATH = os.path.sep.join([BASE_PATH, "train"])
 VAL_PATH = os.path.sep.join([BASE_PATH, "validation"])
