@@ -1,11 +1,6 @@
 name: MyPy
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, edited]
+on: [pull_request, push]
 
 jobs:
   mypy:
