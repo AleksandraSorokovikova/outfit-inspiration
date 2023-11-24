@@ -1,3 +1,5 @@
+from typing import Union
+
 import numpy as np
 from PIL import Image
 import PIL.Image as Image_t
@@ -39,7 +41,9 @@ def get_embeddings(image: Image_t):
     return detection_classes, embeddings
 
 
-def select_top_outfits(detection_classes: list[int], embeddings: np.array):
+def select_top_outfits(
+    detection_classes: list[int], embeddings: np.ndarray
+) -> Union[list[str], None]:
     results = AnnoyInterface.get_predictions_by_model_list(
         detection_classes, embeddings, path=path
     )

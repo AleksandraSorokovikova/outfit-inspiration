@@ -10,7 +10,7 @@ import numpy as np
 def resize(
     img: Image_t,
     target_shape: tuple[int, int] = (224, 224),
-) -> np.array:
+) -> Image_t:
     original_width, original_height = img.size
     target_width, target_height = target_shape
 
@@ -47,7 +47,9 @@ def resize_and_save_image(
         print(e)
 
 
-def resize_image(path_to_src_image: str, new_size: (int, int) = (224, 224)) -> Image_t:
+def resize_image(
+    path_to_src_image: str, new_size: tuple[int, int] = (224, 224)
+) -> Image_t:
     image = Image.open(path_to_src_image)
     image_resized = resize(image, new_size)
     return image_resized

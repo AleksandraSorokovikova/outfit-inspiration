@@ -29,7 +29,7 @@ class AnnoyInterface:
     @staticmethod
     def get_predictions_by_model_list(
         list_of_classes: list[int],
-        embeddings: np.array,
+        embeddings: np.ndarray,
         path: str,
         top_n: int = 10,
         vector_len: int = 2048,

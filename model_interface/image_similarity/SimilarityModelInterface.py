@@ -16,7 +16,7 @@ class SimilarityModelInterface:
             self.classification_model.input, self.classification_model.layers[-2].output
         )
 
-    def get_embeddings(self, images_array: list[np.array]) -> np.array:
+    def get_embeddings(self, images_array: list[np.ndarray]) -> np.ndarray:
         processed_images = np.array([preprocess_input(image) for image in images_array])
         embeddings = self.similarity_model.predict(processed_images)
         return np.array(embeddings)
@@ -39,10 +39,12 @@ class SimilarityModelInterface:
         )
         result = np.array(embeddings)
         if include_filenames:
-            result = [(dataset.filenames[i], vector) for i, vector in enumerate(result)]
+            result = np.array(
+                [(dataset.filenames[i], vector) for i, vector in enumerate(result)]
+            )
         return result
 
-    def get_class(self, images_array: np.array) -> np.array:
+    def get_class(self, images_array: np.ndarray) -> np.ndarray:
         processed_images = np.array([preprocess_input(image) for image in images_array])
         predictions = self.classification_model.predict(processed_images)
         classes = np.argmax(predictions, axis=1)
