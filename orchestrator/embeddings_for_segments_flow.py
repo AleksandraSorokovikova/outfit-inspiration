@@ -1,4 +1,3 @@
-import pickle
 from collections import defaultdict
 
 import numpy as np
@@ -6,6 +5,7 @@ import json
 
 from model_interface.clothes_detection.yolo_interface import YOLOInterface
 from model_interface.clothes_detection.items_dataset import ClothesDataset
+from model_interface.image_similarity.SimilarityModelInterface import SimilarityModelInterface
 from model_interface.clothes_detection.config import (
     model_path,
     model_name,
@@ -17,10 +17,7 @@ from model_interface.clothes_detection.config import (
     segments_file_name,
 )
 from data.data import upload_file, get_and_save_files, get_and_save_folder
-from model_interface.image_similarity.config import (
-    MODEL_INTERFACE_NAME,
-    MODEL_INTERFACE_PATH,
-)
+from model_interface.image_similarity.config import SIMILARITY_MODEL_PATH, SIMILARITY_MODEL_NAME
 from model_interface.config import *
 from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
 
@@ -40,9 +37,7 @@ def create_embeddings() -> None:
             json.dump(data, write_file)
         upload_file(path, name)
 
-    get_and_save_files(keys=MODEL_INTERFACE_NAME, path_to_save=MODEL_INTERFACE_PATH)
-    with open(MODEL_INTERFACE_PATH, "rb") as f:
-        similarity_interface = pickle.load(f)
+    get_and_save_files(keys=SIMILARITY_MODEL_NAME, path_to_save=SIMILARITY_MODEL_PATH)
 
     dataset = ClothesDataset(segments_file_path, img_dir)
 
@@ -66,7 +61,7 @@ def create_embeddings() -> None:
             class_to_garments[garment_class].append(index)
             outfit_to_garments[outfit].append(index)
 
-        embeddings = similarity_interface.get_embeddings(images)
+        embeddings = SimilarityModelInterface.get_embeddings(images)
         for i, index in enumerate(batch):
             garment_to_embedding[int(index)] = embeddings[i].tolist()
 

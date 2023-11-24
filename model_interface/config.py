@@ -1,4 +1,13 @@
-base_path = "../files/"
+import os
+
+dev_path = "../files/"
+prod_path = "../temp_files/"
+
+env = os.getenv("config", "dev")
+if env == "dev":
+    base_path = dev_path
+else:
+    base_path = prod_path
 
 DETECTION_CLASSES = {
     0: "Shoes",
@@ -48,83 +57,36 @@ DETECTION_CLASSES_REVERSE = {
 }
 
 SIMILARITY_CLASSES = {
-    0: "Blouses_Shirts",
-    1: "Cardigans",
-    2: "Denim",
-    3: "Dresses",
-    4: "Graphic_Tees",
-    5: "Jackets_Coats",
-    6: "Jackets_Vests",
-    7: "Leggings",
-    8: "Pants",
-    9: "Rompers_Jumpsuits",
-    10: "Shirts_Polos",
-    11: "Shorts",
-    12: "Skirts",
-    13: "Suiting",
-    14: "Sweaters",
-    15: "Sweatshirts_Hoodies",
-    16: "Tees_Tanks",
-}
+    0: 'bag',
+    1: 'dress',
+    2: 'jumpsuit',
+    3: 'outwear',
+    4: 'pants',
+    5: 'shoes',
+    6: 'skirt',
+    7: 'top'}
 
 SIMILARITY_CLASSES_REVERSE = {
-    "Blouses_Shirts": 0,
-    "Cardigans": 1,
-    "Denim": 2,
-    "Dresses": 3,
-    "Graphic_Tees": 4,
-    "Jackets_Coats": 5,
-    "Jackets_Vests": 6,
-    "Leggings": 7,
-    "Pants": 8,
-    "Rompers_Jumpsuits": 9,
-    "Shirts_Polos": 10,
-    "Shorts": 11,
-    "Skirts": 12,
-    "Suiting": 13,
-    "Sweaters": 14,
-    "Sweatshirts_Hoodies": 15,
-    "Tees_Tanks": 16,
+    "bag": 0,
+    "dress": 1,
+    "jumpsuit": 2,
+    "outwear": 3,
+    "pants": 4,
+    "shoes": 5,
+    "skirt": 6,
+    "top": 7
 }
 
 SIMILARITY_TO_DETECTION_NAMES = {
-    "Blouses_Shirts": [
-        "Shirts & Tops",
-        "Dresses",
-        "Jumpsuits & Rompers",
-        "Coats & Jackets",
-    ],
-    "Cardigans": ["Coats & Jackets", "Shirts & Tops"],
-    "Denim": ["Pants", "Shorts", "Skirts", "Jumpsuits & Rompers", "Stockings"],
-    "Dresses": ["Dresses", "Jumpsuits & Rompers", "Shirts & Tops"],
-    "Graphic_Tees": [
-        "Shirts & Tops",
-        "Dresses",
-        "Jumpsuits & Rompers",
-        "Coats & Jackets",
-    ],
-    "Jackets_Coats": ["Coats & Jackets", "Shirts & Tops"],
-    "Jackets_Vests": ["Shirts & Tops", "Dresses", "Coats & Jackets"],
-    "Leggings": ["Stockings", "Pants", "Jumpsuits & Rompers"],
-    "Pants": ["Pants", "Shorts", "Skirts", "Jumpsuits & Rompers", "Stockings"],
-    "Rompers_Jumpsuits": ["Jumpsuits & Rompers", "Coats & Jackets"],
-    "Shirts_Polos": [
-        "Shirts & Tops",
-        "Dresses",
-        "Jumpsuits & Rompers",
-        "Coats & Jackets",
-    ],
-    "Shorts": ["Shorts", "Skirts", "Pants", "Jumpsuits & Rompers", "Stockings"],
-    "Skirts": ["Skirts", "Shorts", "Dresses", "Pants"],
-    "Suiting": ["Coats & Jackets", "Shirts & Tops", "Dresses", "Jumpsuits & Rompers"],
-    "Sweaters": ["Shirts & Tops", "Coats & Jackets", "Dresses", "Jumpsuits & Rompers"],
-    "Sweatshirts_Hoodies": ["Shirts & Tops", "Coats & Jackets", "Dresses"],
-    "Tees_Tanks": [
-        "Shirts & Tops",
-        "Dresses",
-        "Coats & Jackets",
-        "Jumpsuits & Rompers",
-    ],
+    "bag": ["Handbags"],
+    "dress": ["Dresses", "Jumpsuits & Rompers"],
+    "jumpsuit": ["Jumpsuits & Rompers", "Dresses"],
+    "outwear": ["Coats & Jackets", "Shirts & Tops"],
+    "pants": ["Pants", "Shorts", "Skirts"],
+    "shoes": ["Shoes"],
+    "skirt": ["Skirts", "Shorts"],
+    "top": ["Shirts & Tops", "Coats & Jackets"]
+
 }
 
 SIMILARITY_TO_DETECTION_INDEXES = {

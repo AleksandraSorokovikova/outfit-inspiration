@@ -1,4 +1,13 @@
-base_path = "../files/"
+import os
+
+dev_path = "../files/"
+prod_path = "../temp_files/"
+
+env = os.getenv("config", "dev")
+if env == "dev":
+    base_path = dev_path
+else:
+    base_path = prod_path
 
 file_path_in_drive = "/content/drive/MyDrive/clothes.zip"
 local_download_path = "/content/datasets/"

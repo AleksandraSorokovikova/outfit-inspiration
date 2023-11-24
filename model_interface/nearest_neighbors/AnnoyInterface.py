@@ -2,7 +2,7 @@ from annoy import AnnoyIndex
 from model_interface.config import class_to_annoy, DETECTION_CLASSES
 from tqdm import tqdm
 import numpy as np
-from data.data import upload_file, get_and_save_files
+from data.data import upload_file
 
 
 class AnnoyInterface:
@@ -30,16 +30,16 @@ class AnnoyInterface:
     def get_predictions_by_model_list(
         list_of_classes: list[int],
         embeddings: np.ndarray,
-        path: str,
         top_n: int = 10,
         vector_len: int = 2048,
     ):
         detection_classes_reverse = [DETECTION_CLASSES[i] for i in list_of_classes]
-        annoy_models = [class_to_annoy[i]["name"] for i in detection_classes_reverse]
+        annoy_models = [i for i in detection_classes_reverse]
         selected_model = None
+        lib = AnnoyIndex(vector_len, "euclidean")
         for model in annoy_models:
             try:
-                get_and_save_files(model, path_to_save=f"{path}/{model}")
+                lib.load(class_to_annoy[model]['path'])
                 selected_model = model
                 break
             except Exception as e:
@@ -47,7 +47,6 @@ class AnnoyInterface:
 
         if selected_model is None:
             return None
-        lib = AnnoyIndex(vector_len, "euclidean")
-        lib.load(f"{path}/{selected_model}")
+
         results = lib.get_nns_by_vector(embeddings, n=top_n)
         return results
