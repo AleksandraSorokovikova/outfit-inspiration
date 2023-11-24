@@ -28,10 +28,10 @@ from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
 def detect_clothes() -> None:
     get_and_save_files(path_to_save=model_path, keys=model_name)
     get_and_save_folder(path_to_folder=base_path, key_folder_name=img_name)
-    # model = YOLOInterface(model_path, img_dir)
-    # results = model.detect(None, annotations_file)
-    # results.to_csv(segments_file_path, index=False)
-    # upload_file(path=segments_file_path, key=segments_file_name)
+    model = YOLOInterface(model_path, img_dir)
+    results = model.detect(None, annotations_file)
+    results.to_csv(segments_file_path, index=False)
+    upload_file(path=segments_file_path, key=segments_file_name)
 
 
 def create_embeddings() -> None:
