@@ -1,0 +1,43 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing</title>
+</head>
+<body>
+    <h1>Image Processing</h1>
+
+<!--    {% if message %}-->
+<!--        <p>{{ message }}</p>-->
+<!--    {% endif %}-->
+
+    <form action="/process_image" method="post" enctype="multipart/form-data">
+        <label for="image">Choose an image:</label>
+        <input type="file" name="file" id="image" accept="image/*" required>
+        <br>
+        <input type="submit" value="Process Image">
+    </form>
+
+    <div id="imageContainer"></div>
+
+    {% if target_path %}
+        <div class="image-container">
+            <h2>Target Image:</h2>
+            <img src="{{ target_path }}" alt="Target Image" class="target-image" height="300">
+        </div>
+    {% endif %}
+
+    {% if outfits_paths %}
+        <div class="image-container">
+            <h2>Processed Outfits:</h2>
+            {% for outfit_path in outfits_paths %}
+                <img src="{{ outfit_path }}" alt="Processed Outfit" class="outfit-image" height="300">
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+</body>
+</html>

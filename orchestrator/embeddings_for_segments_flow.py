@@ -3,6 +3,9 @@ from collections import defaultdict
 import numpy as np
 import json
 
+import os
+os.environ["config"] = "prod"
+
 from model_interface.clothes_detection.yolo_interface import YOLOInterface
 from model_interface.clothes_detection.items_dataset import ClothesDataset
 from model_interface.image_similarity.SimilarityModelInterface import SimilarityModelInterface
@@ -26,7 +29,7 @@ def detect_clothes() -> None:
     get_and_save_files(path_to_save=model_path, keys=model_name)
     get_and_save_folder(path_to_folder=base_path, key_folder_name=img_name)
     model = YOLOInterface(model_path, img_dir)
-    results = model.detect(None, annotations_file)
+    results = model.detect()
     results.to_csv(segments_file_path, index=False)
     upload_file(path=segments_file_path, key=segments_file_name)
 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outfit inspiration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Outfit inspiration</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Gallery</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <h1>Image Upload</h1>
+
+    <input type="file" id="uploadInput" accept="image/*">
+    <button onclick="uploadImage()">Upload</button>
+
+    <div id="imageContainer"></div>
+
+    <script>
+        // List of image paths
+        var imagePaths = [
+            'images/849a83db3b7c01637f73bf211f104d39.jpg',
+            'images/922f8bbb12787ee63d0873c385a2dab9.jpg',
+            'images/3028d0c4f32d44de9e46d856131c0621.jpg',
+            'images/6640c4761f614445ae5f12eed22f83b1.jpg'
+            // Add more paths as needed
+        ];
+
+        // Function to display images from the list
+        function displayImages() {
+            var container = document.getElementById('imageContainer');
+
+            // Loop through the image paths
+            for (var i = 0; i < imagePaths.length; i++) {
+                // Create an image element
+                var img = document.createElement('img');
+
+                // Set the image source to the path
+                img.src = imagePaths[i];
+
+                // Set some styling for the image (optional)
+                img.style.width = '300px';
+                img.style.height = '300px';
+                img.style.margin = '10px';
+
+                // Append the image to the container
+                container.appendChild(img);
+            }
+        }
+
+
+        // Function to handle the upload button click
+        function uploadImage() {
+            var input = document.getElementById('uploadInput');
+            var container = document.getElementById('imageContainer');
+
+            container.innerHTML = '';
+
+            if (input.files.length > 0) {
+                var file = input.files[0];
+                var img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.style.width = '300px';
+                img.style.height = '300px';
+                img.style.margin = '10px';
+                container.appendChild(img);
+            } else {
+                alert('Please select a file to upload.');
+            }
+
+            displayImages();
+        }
+    </script>
+
+</body>
+</html>

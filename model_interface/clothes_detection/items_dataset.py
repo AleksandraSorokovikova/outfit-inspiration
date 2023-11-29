@@ -52,7 +52,7 @@ class ClothesDataset(Dataset):
         raw = self.img_labels.iloc[idx, :]
         img_path = os.path.join(self.img_dir, raw["image_id"])
         image = Image.open(img_path)
-        x_min, y_min, x_max, y_max = raw[1:5]
+        x_min, y_min, x_max, y_max = raw[:4]
 
         image = image.crop((x_min, y_min, x_max, y_max))
 
