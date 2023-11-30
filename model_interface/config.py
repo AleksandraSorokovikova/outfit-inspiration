@@ -57,14 +57,15 @@ DETECTION_CLASSES_REVERSE = {
 }
 
 SIMILARITY_CLASSES = {
-    0: 'bag',
-    1: 'dress',
-    2: 'jumpsuit',
-    3: 'outwear',
-    4: 'pants',
-    5: 'shoes',
-    6: 'skirt',
-    7: 'top'}
+    0: "bag",
+    1: "dress",
+    2: "jumpsuit",
+    3: "outwear",
+    4: "pants",
+    5: "shoes",
+    6: "skirt",
+    7: "top",
+}
 
 SIMILARITY_CLASSES_REVERSE = {
     "bag": 0,
@@ -74,7 +75,7 @@ SIMILARITY_CLASSES_REVERSE = {
     "pants": 4,
     "shoes": 5,
     "skirt": 6,
-    "top": 7
+    "top": 7,
 }
 
 SIMILARITY_TO_DETECTION_NAMES = {
@@ -85,11 +86,12 @@ SIMILARITY_TO_DETECTION_NAMES = {
     "pants": ["Pants", "Shorts", "Skirts"],
     "shoes": ["Shoes"],
     "skirt": ["Skirts", "Shorts"],
-    "top": ["Shirts & Tops", "Coats & Jackets"]
-
+    "top": ["Shirts & Tops", "Coats & Jackets"],
 }
 
-DETECTION_RELEVANT_CLASSES = {i for item in SIMILARITY_TO_DETECTION_NAMES.values() for i in item}
+DETECTION_RELEVANT_CLASSES = {
+    i for item in SIMILARITY_TO_DETECTION_NAMES.values() for i in item
+}
 
 SIMILARITY_TO_DETECTION_INDEXES = {
     SIMILARITY_CLASSES_REVERSE[index_1]: [

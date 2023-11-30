@@ -10,7 +10,7 @@ from model_interface.image_similarity.config import (
     TRAIN_SPLIT,
     VALIDATION_SPLIT,
     ORIG_INPUT_DATASET,
-    IMAGES_DESCRIPTION_PATH
+    IMAGES_DESCRIPTION_PATH,
 )
 
 

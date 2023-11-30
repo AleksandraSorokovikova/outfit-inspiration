@@ -1,4 +1,5 @@
 import os
+
 os.environ["config"] = "dev"
 
 from collections import defaultdict
@@ -7,11 +8,14 @@ import numpy as np
 import json
 
 import os
+
 os.environ["config"] = "prod"
 
 from model_interface.clothes_detection.yolo_interface import YOLOInterface
 from model_interface.clothes_detection.items_dataset import ClothesDataset
-from model_interface.image_similarity.SimilarityModelInterface import SimilarityModelInterface
+from model_interface.image_similarity.SimilarityModelInterface import (
+    SimilarityModelInterface,
+)
 from model_interface.clothes_detection.config import (
     model_path,
     model_name,
@@ -20,14 +24,18 @@ from model_interface.clothes_detection.config import (
     img_name,
     annotations_file,
     segments_file_path,
-    segments_file_name
+    segments_file_name,
 )
 from data.data import upload_file, get_and_save_files, get_and_save_folder
-from model_interface.image_similarity.config import SIMILARITY_MODEL_PATH, SIMILARITY_MODEL_NAME
+from model_interface.image_similarity.config import (
+    SIMILARITY_MODEL_PATH,
+    SIMILARITY_MODEL_NAME,
+)
 from model_interface.config import *
 from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
 
 from tqdm import tqdm
+
 
 def detect_clothes() -> None:
     get_and_save_files(path_to_save=model_path, keys=model_name)

@@ -126,7 +126,10 @@ def get_and_save_files(keys: str | list[str], path_to_save: str) -> None:
         _save_file(keys, client, path_to_save)
     else:
         for key in tqdm(keys):
-            _save_file(key, client, path_to_save + "/" + key)
+            if not os.path.exists(os.path.join(path_to_save, os.path.basename(key))):
+                _save_file(
+                    key, client, os.path.join(path_to_save, os.path.basename(key))
+                )
 
 
 def get_and_save_folder(path_to_folder: str, key_folder_name: str) -> None:

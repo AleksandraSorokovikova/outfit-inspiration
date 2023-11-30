@@ -6,10 +6,7 @@ import asyncio
 import os
 import pandas as pd
 
-df = pd.read_csv(
-    "/Users/evgeniia.vu/Desktop/CUB study/ADL/complete-the-look-dataset/datasets/raw_train.tsv",
-    sep="\t",
-)
+df = pd.read_csv("pinterest.csv")
 
 
 def files_name(directory: str) -> Union[list[str], None]:
@@ -50,7 +47,7 @@ async def download_and_save_image(
 
 
 async def main() -> None:
-    save_directory = "/Users/evgeniia.vu/Desktop/CUB study/ADL/datasets/clothes/images"
+    save_directory = "pins"
     args_list = []
 
     async with aiohttp.ClientSession() as session:

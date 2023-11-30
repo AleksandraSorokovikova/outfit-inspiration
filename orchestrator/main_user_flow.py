@@ -1,7 +1,11 @@
 import os
 
-from model_interface.image_similarity.config import SIMILARITY_MODEL_PATH, SIMILARITY_MODEL_NAME, \
-    CLASSIFICATION_MODEL_PATH, CLASSIFICATION_MODEL_NAME
+from model_interface.image_similarity.config import (
+    SIMILARITY_MODEL_PATH,
+    SIMILARITY_MODEL_NAME,
+    CLASSIFICATION_MODEL_PATH,
+    CLASSIFICATION_MODEL_NAME,
+)
 
 os.environ["config"] = "prod"
 
@@ -12,10 +16,13 @@ from PIL import Image
 import PIL.Image as Image_t
 from data_processor.processor import resize_image
 from data.data import get_dict_from_json, get_file, get_and_save_files
-from model_interface.image_similarity.SimilarityModelInterface import SimilarityModelInterface
+from model_interface.image_similarity.SimilarityModelInterface import (
+    SimilarityModelInterface,
+)
 from model_interface.config import (
     SIMILARITY_TO_DETECTION_INDEXES,
-    garment_to_outfit_name, base_path,
+    garment_to_outfit_name,
+    base_path,
 )
 from model_interface.clothes_detection.config import img_name
 from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
@@ -35,7 +42,7 @@ def get_embeddings(image: Image_t):
 
 
 def select_top_outfits(
-        detection_classes: list[int], embeddings: np.ndarray
+    detection_classes: list[int], embeddings: np.ndarray
 ) -> Union[list[str], None]:
     results = AnnoyInterface.get_predictions_by_model_list(
         detection_classes, embeddings
@@ -63,11 +70,12 @@ def send_results(source_image: Image_t, outfits: list[str]) -> None:
             ax = plt.subplot(3, 3, i + 1)
             plt.imshow(image)
             plt.axis("off")
+            plt.show()
 
     show_similar_images(source_image, found_images)
 
 
-def flow(path_to_image: str, dir_path) -> list[str]:
+def flow(path_to_image: str, dir_path=None) -> list[str]:
     image = upload_image(path_to_image)
     detection_classes, embeddings = get_embeddings(image)
     outfits = select_top_outfits(detection_classes, embeddings)
@@ -75,3 +83,9 @@ def flow(path_to_image: str, dir_path) -> list[str]:
     get_and_save_files(outfits, dir_path)
 
     return outfits
+
+
+if __name__ == "__main__":
+    flow(
+        "/Users/evgeniia.vu/Desktop/CUB study/ADL/outfit-inspiration/web/static/temp_image.jpg"
+    )

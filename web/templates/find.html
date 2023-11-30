@@ -1,43 +1,51 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Processing</title>
+    <title>Outfit inspiration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Image Processing</h1>
+    <h1>Outfit inspiration</h1>
 
-<!--    {% if message %}-->
-<!--        <p>{{ message }}</p>-->
-<!--    {% endif %}-->
-
-    <form action="/process_image" method="post" enctype="multipart/form-data">
+    <form id="imageForm" action="/process_image" method="post" enctype="multipart/form-data">
         <label for="image">Choose an image:</label>
         <input type="file" name="file" id="image" accept="image/*" required>
         <br>
-        <input type="submit" value="Process Image">
+        <input type="submit" value="Process Image" onclick="showLoadingSpinner()">
     </form>
+
+    <div id="loading-container">
+        <div id="loading-spinner"></div>
+        <p>Looking for suitable outfits</p>
+    </div>
 
     <div id="imageContainer"></div>
 
     {% if target_path %}
-        <div class="image-container">
-            <h2>Target Image:</h2>
+        <div class="image-container-target">
+            <h2>Your image:</h2>
             <img src="{{ target_path }}" alt="Target Image" class="target-image" height="300">
         </div>
     {% endif %}
 
     {% if outfits_paths %}
-        <div class="image-container">
-            <h2>Processed Outfits:</h2>
+        <h2>Outfits:</h2>
+        <div class="image-container-outfits">
             {% for outfit_path in outfits_paths %}
-                <img src="{{ outfit_path }}" alt="Processed Outfit" class="outfit-image" height="300">
+                <a href="{{ outfit_path }}" class="post-link" target="_blank">
+                    <img src="{{ outfit_path }}" alt="Processed Outfit" class="outfit-image" height="300">
+                </a>
             {% endfor %}
         </div>
     {% endif %}
 
+    <script>
+        function showLoadingSpinner() {
+            document.getElementById('loading-container').style.display = 'block';
+        }
+    </script>
 
 </body>
 </html>

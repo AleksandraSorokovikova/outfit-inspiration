@@ -90,11 +90,10 @@ class SimilarityModel:
 
     def save_onnx(self):
         classification_model_signature = [
-            tf.TensorSpec(model_input.shape, model_input.dtype) for model_input in self.classification_model.inputs
-            ]
+            tf.TensorSpec(model_input.shape, model_input.dtype)
+            for model_input in self.classification_model.inputs
+        ]
         onnx_classification_model, _ = tf2onnx.convert.from_keras(
-            self.classification_model,
-            classification_model_signature,
-            opset=13
+            self.classification_model, classification_model_signature, opset=13
         )
         onnx.save(onnx_classification_model, CLASSIFICATION_MODEL_PATH)

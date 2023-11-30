@@ -1,4 +1,5 @@
 import os
+
 os.environ["config"] = "dev"
 
 from data.data import upload_file
@@ -9,7 +10,7 @@ from model_interface.image_similarity.config import (
     SIMILARITY_MODEL_PATH,
     SIMILARITY_MODEL_NAME,
     MODEL_NAME,
-    MODEL_WEIGHTS
+    MODEL_WEIGHTS,
 )
 from model_interface.image_similarity.SimilarityModel import SimilarityModel
 
