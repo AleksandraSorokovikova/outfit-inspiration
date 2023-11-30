@@ -1,4 +1,6 @@
-import pickle
+import os
+os.environ["config"] = "dev"
+
 from data.data import upload_file
 from model_interface.image_similarity.config import (
     FEED_TEST,

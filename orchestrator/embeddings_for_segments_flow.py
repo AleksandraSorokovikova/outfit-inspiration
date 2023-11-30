@@ -1,3 +1,6 @@
+import os
+os.environ["config"] = "dev"
+
 from collections import defaultdict
 
 import numpy as np
@@ -14,13 +17,14 @@ from model_interface.clothes_detection.config import (
     img_name,
     annotations_file,
     segments_file_path,
-    segments_file_name,
+    segments_file_name
 )
 from data.data import upload_file, get_and_save_files, get_and_save_folder
 from model_interface.image_similarity.config import SIMILARITY_MODEL_PATH, SIMILARITY_MODEL_NAME
 from model_interface.config import *
 from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
 
+from tqdm import tqdm
 
 def detect_clothes() -> None:
     get_and_save_files(path_to_save=model_path, keys=model_name)
@@ -41,7 +45,7 @@ def create_embeddings() -> None:
 
     dataset = ClothesDataset(segments_file_path, img_dir)
 
-    batch_size = 128
+    batch_size = 512
     garment_to_outfit = {}
     class_to_garments = defaultdict(list)
     outfit_to_garments = defaultdict(list)
@@ -52,7 +56,7 @@ def create_embeddings() -> None:
     ):
         images = []
 
-        for i in batch:
+        for i in tqdm(batch):
             index = int(i)
             image, label = dataset[index]
             outfit, garment_class = label

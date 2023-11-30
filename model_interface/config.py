@@ -89,6 +89,8 @@ SIMILARITY_TO_DETECTION_NAMES = {
 
 }
 
+DETECTION_RELEVANT_CLASSES = {i for item in SIMILARITY_TO_DETECTION_NAMES.values() for i in item}
+
 SIMILARITY_TO_DETECTION_INDEXES = {
     SIMILARITY_CLASSES_REVERSE[index_1]: [
         DETECTION_CLASSES_REVERSE[index_2] for index_2 in indices
@@ -113,5 +115,5 @@ class_to_annoy = {
         "path": annoy_path(base_path, garment_class),
         "name": annoy_name(garment_class),
     }
-    for garment_class in DETECTION_CLASSES_REVERSE
+    for garment_class in DETECTION_RELEVANT_CLASSES
 }
