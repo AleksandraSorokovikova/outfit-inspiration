@@ -1,5 +1,5 @@
 from annoy import AnnoyIndex
-from model_interface.config import class_to_annoy, DETECTION_CLASSES
+from model_interface.config import class_to_annoy, DETECTION_CLASSES, DETECTION_RELEVANT_CLASSES
 from tqdm import tqdm
 import numpy as np
 from data.data import upload_file
@@ -15,6 +15,8 @@ class AnnoyInterface:
         upload_to_db: bool = True,
     ):
         for garment in tqdm(dict_of_classes):
+            if garment not in DETECTION_RELEVANT_CLASSES:
+                continue
             library = AnnoyIndex(vector_len, "euclidean")
             for item in dict_of_classes[garment]:
                 library.add_item(item, embeddings[item])
