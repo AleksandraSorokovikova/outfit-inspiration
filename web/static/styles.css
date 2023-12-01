@@ -8,7 +8,7 @@ footer {
     border-top: 1px solid #ccc;
     background-color: white;
     text-align: center;
-    padding: 10px;
+    padding: 12px;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -19,6 +19,7 @@ header {
     background-color: #E2B0B0;
     color: #555;
     text-align: center;
+    padding: 10px
 }
 
 nav {
