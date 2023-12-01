@@ -83,9 +83,3 @@ def flow(path_to_image: str, dir_path=None) -> list[str]:
     get_and_save_files(outfits, dir_path)
 
     return outfits
-
-
-if __name__ == "__main__":
-    flow(
-        "/Users/evgeniia.vu/Desktop/CUB study/ADL/outfit-inspiration/web/static/temp_image.jpg"
-    )
