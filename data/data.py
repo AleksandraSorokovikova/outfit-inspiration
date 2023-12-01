@@ -10,6 +10,7 @@ from botocore.response import StreamingBody
 from dotenv import load_dotenv
 from data import data_exceptions
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 
 load_dotenv()
 
@@ -123,13 +124,20 @@ def get_and_save_files(keys: str | list[str], path_to_save: str) -> None:
     client = create_client()
 
     if isinstance(keys, str):
-        _save_file(keys, client, path_to_save)
+        if not os.path.exists(path_to_save):
+            _save_file(keys, client, path_to_save)
     else:
-        for key in tqdm(keys):
-            if not os.path.exists(os.path.join(path_to_save, os.path.basename(key))):
-                _save_file(
-                    key, client, os.path.join(path_to_save, os.path.basename(key))
-                )
+        with ThreadPoolExecutor(max_workers=7) as executor:
+            for key in tqdm(keys):
+                if not os.path.exists(
+                    os.path.join(path_to_save, os.path.basename(key))
+                ):
+                    future = executor.submit(
+                        _save_file,
+                        key,
+                        client,
+                        os.path.join(path_to_save, os.path.basename(key)),
+                    )
 
 
 def get_and_save_folder(path_to_folder: str, key_folder_name: str) -> None:
