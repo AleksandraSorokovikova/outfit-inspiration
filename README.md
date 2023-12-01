@@ -5,7 +5,7 @@ Web service for outfit inspiration by your wardrobe
 1. Poetry for dependency management
    1. Create Python 3.11 environment:
            ```
-           pyenv install 3.11
+           pyenv shell 3.11
            ```
    3. Set which Python to use:
            ```
