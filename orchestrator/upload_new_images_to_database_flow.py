@@ -1,6 +1,7 @@
-# Пока что тут иммитация airflow dag, позже превратится в настоящий dag
-
+from airflow import DAG
+from airflow.operators.python import PythonOperator
 import os
+import datetime
 import pandas as pd
 from data.data import upload_file, upload_files
 from data_processor.processor import create_images_folder
@@ -12,6 +13,10 @@ from model_interface.image_similarity.config import (
     ORIG_INPUT_DATASET,
     IMAGES_DESCRIPTION_PATH,
 )
+
+utc = datetime.timedelta(hours=0)
+drop_recommender_dag = DAG('upload_new_images_to_database_flow',
+                           start_date=datetime.datetime.now(tz=datetime.timezone(utc)))
 
 
 def load_new_images() -> tuple[str, str]:
@@ -56,11 +61,22 @@ def upload_preprocessed_images_to_database(
     print("Success!")
 
 
-def flow():
-    images_folder, images_description = load_new_images()
-    folder_dataset, index_to_id = preprocess_images(images_folder, images_description)
-    upload_preprocessed_images_to_database(folder_dataset, index_to_id)
+load_new_images_task = PythonOperator(
+    task_id='load_new_images',
+    python_callable=load_new_images,
+    dag=drop_recommender_dag
+)
 
+preprocess_images_task = PythonOperator(
+    task_id='preprocess_images',
+    python_callable=preprocess_images,
+    dag=drop_recommender_dag
+)
 
-if __name__ == "__main__":
-    flow()
+upload_preprocessed_images_to_database_task = PythonOperator(
+    task_id='upload_preprocessed_images_to_database',
+    python_callable=upload_preprocessed_images_to_database,
+    dag=drop_recommender_dag
+)
+
+load_new_images_task >> preprocess_images_task >> upload_preprocessed_images_to_database_task

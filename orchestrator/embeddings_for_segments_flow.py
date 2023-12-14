@@ -1,4 +1,5 @@
 import os
+import datetime
 
 os.environ["config"] = "dev"
 
@@ -11,6 +12,8 @@ import os
 
 os.environ["config"] = "prod"
 
+from airflow import DAG
+from airflow.operators.python import PythonOperator
 from model_interface.clothes_detection.yolo_interface import YOLOInterface
 from model_interface.clothes_detection.items_dataset import ClothesDataset
 from model_interface.image_similarity.SimilarityModelInterface import (
@@ -35,6 +38,11 @@ from model_interface.config import *
 from model_interface.nearest_neighbors.AnnoyInterface import AnnoyInterface
 
 from tqdm import tqdm
+
+
+utc = datetime.timedelta(hours=0)
+drop_recommender_dag = DAG('embeddings_for_segments_flow',
+                           start_date=datetime.datetime.now(tz=datetime.timezone(utc)))
 
 
 def detect_clothes() -> None:
@@ -103,5 +111,16 @@ def flow() -> None:
     create_embeddings()
 
 
-if __name__ == "__main__":
-    flow()
+detect_clothes_operator = PythonOperator(
+    task_id='tracks_titles_loading',
+    python_callable=detect_clothes,
+    dag=drop_recommender_dag
+)
+
+create_embeddings_operator = PythonOperator(
+    task_id='tracks_titles_loading',
+    python_callable=create_embeddings,
+    dag=drop_recommender_dag
+)
+
+detect_clothes_operator >> create_embeddings_operator
